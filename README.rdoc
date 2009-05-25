@@ -1,0 +1,26 @@
+= git-p4-sync
+
+Submit changes made to a Git repository into to Perforce
+
+== Use case
+
+Joe starts an amazing startup with a few l337 h4x0rs buddies. Obviously, they use Git as their SCM because of their awesomeness. Amazing Startup is eventually acquired by Big Co Inc, which uses Perforce as their SCM. The l337 h4x0rs are obviously not willing to give up Git, and convincing 3000 employees and C-Level executives to drop Perforce for Git sounds like mission impossible. Enters git-p4-sync. It allows l337 h4x0rs to sync a Git repository into Perforce with a simple command. It is easier to use than git-p4, and does just one thing: sync changes made on the Git repository into Perforce.
+
+A good way to use this script is to run it as a cronjob.
+  
+The --test switch is useful to test git-p4-sync without actually doing anything to your files.
+
+= Example
+  $ git-p4-sync -h  # get help
+  $ git-p4-sync -g ~/git/my-project/ -p ~/p4/my-project/ --pull --submit  # do it
+  $ git-p4-sync -g ~/git/my-project/ -p ~/p4/my-project/ --pull --submit  --test  # fake it
+
+== Dependencies (for tests only)
+
+  - Git command line executables
+  - Perforce command line executable
+  - diff_dirs gem
+
+== COPYRIGHT
+
+Copyright (c) 2009 {Carl Mercier}[http://carlmercier.com]. See LICENSE for details.

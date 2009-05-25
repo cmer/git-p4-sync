@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 ##
 ## git-p4-sync, by Carl Mercier (http://carlmercier.com)
 ## Started in May 2009
@@ -8,6 +8,6 @@
 ##
 
 path = File.dirname(__FILE__)
-require path + '/lib/init'
-require path + '/lib/git_p4_sync'
-require path + '/lib/start'
+require path + '/../lib/init'
+require path + '/../lib/git_p4_sync'
+require path + '/../lib/start'
