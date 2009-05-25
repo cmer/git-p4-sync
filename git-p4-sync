@@ -1,0 +1,13 @@
+#!/usr/bin/ruby
+##
+## git-p4-sync, by Carl Mercier (http://carlmercier.com)
+## Started in May 2009
+##
+## This script sync changes made to a Git repository back to Perforce.
+## It currently only supports one-way sync'ing:  GIT -> P4
+##
+
+path = File.dirname(__FILE__)
+require path + '/lib/init'
+require path + '/lib/git_p4_sync'
+require path + '/lib/start'
