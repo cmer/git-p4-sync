@@ -19,7 +19,7 @@ module GitP4Sync
     if pull
       Dir.chdir(git_path) do
         puts "Pulling Git from remote server."
-        exec "git pull", simulate
+        run_cmd "git pull", simulate
       end
     end
 
@@ -37,13 +37,13 @@ module GitP4Sync
         Dir.chdir(p4_path) do
           case action
           when :new
-            exec "cp -r #{git_path}#{file} #{p4_path}#{file}", simulate
-            exec "#{p4_add_recursively("#{p4_path}#{file}")}", simulate
+            run_cmd "cp -r #{git_path}#{file} #{p4_path}#{file}", simulate
+            run_cmd "#{p4_add_recursively("#{p4_path}#{file}")}", simulate
           when :deleted
-            exec "p4 delete #{p4_path}#{file}", simulate
+            run_cmd "p4 delete #{p4_path}#{file}", simulate
           when :modified
-            exec "p4 edit #{p4_path}#{file}", simulate
-            exec "cp #{git_path}#{file} #{p4_path}#{file}", simulate
+            run_cmd "p4 edit #{p4_path}#{file}", simulate
+            run_cmd "cp #{git_path}#{file} #{p4_path}#{file}", simulate
           else
             puts "Unknown change type #{action}. Stopping."
             exit 1
@@ -59,7 +59,7 @@ module GitP4Sync
         
         Dir.chdir(p4_path) do
           puts "Submitting changes to Perforce"
-          exec "p4 submit -d '#{git_head_commit.gsub("'", "''")}'", simulate
+          run_cmd "p4 submit -d '#{git_head_commit.gsub("'", "''")}'", simulate
         end
       end
     else
@@ -68,7 +68,7 @@ module GitP4Sync
     end
   end
   
-  def exec(cmd, simulate = false, puts_prefix = "  ")
+  def run_cmd(cmd, simulate = false, puts_prefix = "  ")
     if simulate
       puts "#{puts_prefix}simulation: #{cmd}"
     else
