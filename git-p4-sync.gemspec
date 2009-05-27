@@ -52,3 +52,5 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<diff_dirs>, [">= 0.1.2"])
   end
 end
+
+#
