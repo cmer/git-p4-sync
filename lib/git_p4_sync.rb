@@ -1,18 +1,5 @@
 module GitP4Sync
 
-  def lambda_ignore(item)
-    re = Regexp.compile(/#{item}/)
-    l = lambda {|diff| diff =~ re }
-    l
-  end
-
-  def is_ignored?(file)
-    @ignore_list.each {|ignore|
-      return true if lambda_ignore(ignore).call(file)
-    }
-    return false
-  end
-  
   def run(options)
     # branch    = options[:branch] || "master"
     branch = "master"
@@ -21,7 +8,17 @@ module GitP4Sync
     simulate  = options[:simulate] || false
     pull      = options[:pull] || false
     submit    = options[:submit] || false
-    @ignore_list =  ( options[:ignore] ? options[:ignore].split(",") : [".git"] )
+
+    @ignore_list = [".git"]
+    if options[:ignore]
+      if options[:ignore].include?(":")
+        @ignore_list = @ignore_list.concat(options[:ignore].split(":"))
+      if options[:ignore].include?(",")
+        @ignore_list = @ignore_list.concat(options[:ignore].split(","))
+      else
+        @ignore_list = @ignore_list.insert(-1, options[:ignore])
+      end
+    end
 
     git_path = add_slash(File.expand_path(git_path))
     p4_path = add_slash(File.expand_path(p4_path))
@@ -96,6 +93,18 @@ module GitP4Sync
     output = ""
     output = `#{cmd}` unless simulate
     [output, $?]
+  end
+  
+  def lambda_ignore(item)
+    re = Regexp.compile(/#{item}/)
+    lambda {|diff| diff =~ re }
+  end
+
+  def is_ignored?(file)
+    @ignore_list.each {|ignore|
+      return true if lambda_ignore(ignore).call(file)
+    }
+    return false
   end
   
   def add_slash(path)

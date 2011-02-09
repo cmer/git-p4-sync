@@ -29,7 +29,7 @@ OptionParser.new do |opts|
     options[:simulate] = o
   end
   
-  opts.on("-i", "--ignore", "Items to ignore. this is a comma delimited list") do |o|
+  opts.on("-i", "--ignore [STRING]", "Items to ignore. this is a comma delimited list") do |o|
     options[:ignore] = o
   end
   
