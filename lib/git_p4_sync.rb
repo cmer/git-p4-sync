@@ -13,7 +13,7 @@ module GitP4Sync
     if options[:ignore]
       if options[:ignore].include?(":")
         @ignore_list = @ignore_list.concat(options[:ignore].split(":"))
-      if options[:ignore].include?(",")
+      elsif options[:ignore].include?(",")
         @ignore_list = @ignore_list.concat(options[:ignore].split(","))
       else
         @ignore_list = @ignore_list.insert(-1, options[:ignore])
