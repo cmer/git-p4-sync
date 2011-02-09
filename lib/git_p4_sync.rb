@@ -1,4 +1,17 @@
 module GitP4Sync
+
+  def lambda_ignore(item)
+    re = Regexp.compile(/#{item}/)
+    l = lambda {|diff| diff =~ re }
+    l
+  end
+
+  def is_ignored?(file)
+    @ignore_list.each {|ignore|
+      return true if lambda_ignore(ignore).call(file)
+    }
+    return false
+  end
   
   def run(options)
     # branch    = options[:branch] || "master"
@@ -8,7 +21,7 @@ module GitP4Sync
     simulate  = options[:simulate] || false
     pull      = options[:pull] || false
     submit    = options[:submit] || false
-    ignore_list =  ( options[:ignore] ? options[:ignore].split(",") : [".git"] )
+    @ignore_list =  ( options[:ignore] ? options[:ignore].split(",") : [".git"] )
 
     git_path = add_slash(File.expand_path(git_path))
     p4_path = add_slash(File.expand_path(p4_path))
@@ -23,6 +36,10 @@ module GitP4Sync
       end
     end
 
+    if File.exist?(gitignore = File.join(git_path, ".gitignore"))
+      @ignore_list = @ignore_list.concat(File.read(gitignore).split(/\n/).map {|i| i.gsub("*",".*") } )
+    end
+
     diff = diff_dirs(p4_path, git_path)
     
     if diff.size > 0
@@ -31,6 +48,7 @@ module GitP4Sync
         file = strip_leading_slash(d[1])
 
         # todo: skip ignored files/directories
+        next if is_ignored?(file)
         
         puts "#{action.to_s.upcase} in Git: #{file}"
         

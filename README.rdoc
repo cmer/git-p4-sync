@@ -2,6 +2,9 @@
 
 Submit changes made to a Git repository into to Perforce
 
+== changes
+Updated now with a -i/--ignore flag, and to pay respects to a .gitignore file, if present
+
 == Use case
 
 Joe starts an amazing startup with a few l337 h4x0rs buddies. Obviously, they use Git as their SCM because of their awesomeness. Amazing Startup is eventually acquired by Big Co Inc, which uses Perforce as their SCM. The l337 h4x0rs are obviously not willing to give up Git, and convincing 3000 employees and C-Level executives to drop Perforce for Git sounds like mission impossible. Enters git-p4-sync. It allows l337 h4x0rs to sync a Git repository into Perforce with a simple command. It is easier to use than git-p4, and does just one thing: sync changes made on the Git repository into Perforce.
