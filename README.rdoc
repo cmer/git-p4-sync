@@ -24,3 +24,9 @@ The --test switch is useful to test git-p4-sync without actually doing anything 
 == COPYRIGHT
 
 Copyright (c) 2009-2011 {Carl Mercier}[http://carlmercier.com]. See LICENSE for details.
+
+== CONTRIBUTORS
+
+{Vincent Batts}[https://github.com/vbatts]
+
+
