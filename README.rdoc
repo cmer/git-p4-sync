@@ -13,10 +13,17 @@ A good way to use this script is to run it as a cronjob.
   
 The --test switch is useful to test git-p4-sync without actually doing anything to your files.
 
+== Information of ignores
+
+By default the '.git' directory is ignored, and if there is a '.gitignore' list, its items are added to the ignore list as well.
+
+To add addition items use the -i/--ignore flag. It can take a single item, or a delimited list (either colon ':' or comma ',')
+
 = Example
   $ git-p4-sync -h  # get help
   $ git-p4-sync -g ~/git/my-project/ -p ~/p4/my-project/ --pull --submit  # do it
   $ git-p4-sync -g ~/git/my-project/ -p ~/p4/my-project/ --pull --submit  --test  # fake it
+  $ git-p4-sync -g ~/git/my-project/ -p ~/p4/my-project/ --pull --submit --ignore ponies.tar.gz,kittens.tar.gz # ignore some stuff
 
 == Dependencies (for tests only)
 
@@ -27,3 +34,4 @@ The --test switch is useful to test git-p4-sync without actually doing anything 
 == COPYRIGHT
 
 Copyright (c) 2009 {Carl Mercier}[http://carlmercier.com]. See LICENSE for details.
+
