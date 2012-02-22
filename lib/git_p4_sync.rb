@@ -55,7 +55,7 @@ module GitP4Sync
             run_cmd "cp -r #{git_path}#{file} #{p4_path}#{file}", simulate
             run_cmd "#{p4_add_recursively("#{p4_path}#{file}")}", simulate
           when :deleted
-            run_cmd "p4 delete #{p4_path}#{file}", simulate
+            run_cmd "find #{p4_path}#{file} -type f | xargs -i p4 delete {}", simulate
           when :modified
             run_cmd "p4 edit #{p4_path}#{file}", simulate
             run_cmd "cp #{git_path}#{file} #{p4_path}#{file}", simulate
@@ -70,6 +70,8 @@ module GitP4Sync
         git_head_commit = ""
         Dir.chdir(git_path) do
           git_head_commit = `git show --pretty=oneline`.split("\n")[0]
+          git_url = `git remote -v`.split("git@")[1].split(".git")[0].gsub(".com:", ".com/")
+          git_head_commit = "http://#{git_url}/commit/#{git_head_commit}"
         end
         
         Dir.chdir(p4_path) do
