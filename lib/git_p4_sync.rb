@@ -69,7 +69,7 @@ module GitP4Sync
       if submit
         git_head_commit = ""
         Dir.chdir(git_path) do
-          git_head_commit = `git show --pretty=oneline`.split("\n")[0]
+          git_head_commit = `git show -v -s --pretty=oneline`.split("\n")[0]
         end
         
         Dir.chdir(p4_path) do
