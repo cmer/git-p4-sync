@@ -52,13 +52,13 @@ module GitP4Sync
         Dir.chdir(p4_path) do
           case action
           when :new
-            run_cmd "cp -r #{git_path}#{file} #{p4_path}#{file}", simulate
-            run_cmd "#{p4_add_recursively("#{p4_path}#{file}")}", simulate
+            run_cmd "cp -r '#{git_path}#{file}' '#{p4_path}#{file}'", simulate
+            run_cmd "#{p4_add_recursively("'#{p4_path}#{file}'")}", simulate
           when :deleted
-            run_cmd "p4 delete #{p4_path}#{file}", simulate
+            run_cmd "p4 delete '#{p4_path}#{file}'", simulate
           when :modified
-            run_cmd "p4 edit #{p4_path}#{file}", simulate
-            run_cmd "cp #{git_path}#{file} #{p4_path}#{file}", simulate
+            run_cmd "p4 edit '#{p4_path}#{file}'", simulate
+            run_cmd "cp '#{git_path}#{file}' '#{p4_path}#{file}'", simulate
           else
             puts "Unknown change type #{action}. Stopping."
             exit 1
