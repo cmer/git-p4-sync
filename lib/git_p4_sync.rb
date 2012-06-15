@@ -55,7 +55,12 @@ module GitP4Sync
             run_cmd "cp -r '#{git_path}#{file}' '#{p4_path}#{file}'", simulate
             run_cmd "#{p4_add_recursively("'#{p4_path}#{file}'")}", simulate
           when :deleted
-            run_cmd "p4 delete '#{p4_path}#{file}'", simulate
+            file_path="#{p4_path}#{file}"
+            Find.find(file_path) do |f|
+              puts "DELETED in Git (dir contents): #{f}" if file_path != f
+              run_cmd("p4 delete '#{f}'", simulate)
+            end
+            FileUtils.remove_entry_secure(file_path,:force => true)
           when :modified
             run_cmd "p4 edit '#{p4_path}#{file}'", simulate
             run_cmd "cp '#{git_path}#{file}' '#{p4_path}#{file}'", simulate
