@@ -34,7 +34,7 @@ module GitP4Sync
     end
 
     if File.exist?(gitignore = File.join(git_path, ".gitignore"))
-      @ignore_list = @ignore_list.concat(File.read(gitignore).split(/\n/).map {|i| i.gsub("*",".*") } )
+      @ignore_list = @ignore_list.concat(File.read(gitignore).split(/\n/).reject{|i| (i.size == 0) or i.strip.start_with?("#") }.map {|i| i.gsub("*",".*") } )
     end
 
     diff = diff_dirs(p4_path, git_path)
