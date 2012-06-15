@@ -34,7 +34,7 @@ module GitP4Sync
     end
 
     if File.exist?(gitignore = File.join(git_path, ".gitignore"))
-      @ignore_list = @ignore_list.concat(File.read(gitignore).split(/\n/).map {|i| i.gsub("*",".*") } )
+      @ignore_list = @ignore_list.concat(File.read(gitignore).split(/\n/).reject{|i| (i.size == 0) or i.strip.start_with?("#") }.map {|i| i.gsub("*",".*") } )
     end
 
     diff = diff_dirs(p4_path, git_path)
@@ -52,13 +52,18 @@ module GitP4Sync
         Dir.chdir(p4_path) do
           case action
           when :new
-            run_cmd "cp -r #{git_path}#{file} #{p4_path}#{file}", simulate
-            run_cmd "#{p4_add_recursively("#{p4_path}#{file}")}", simulate
+            run_cmd "cp -r '#{git_path}#{file}' '#{p4_path}#{file}'", simulate
+            run_cmd "#{p4_add_recursively("'#{p4_path}#{file}'")}", simulate
           when :deleted
-            run_cmd "p4 delete #{p4_path}#{file}", simulate
+            file_path="#{p4_path}#{file}"
+            Find.find(file_path) do |f|
+              puts "DELETED in Git (dir contents): #{f}" if file_path != f
+              run_cmd("p4 delete '#{f}'", simulate)
+            end
+            FileUtils.remove_entry_secure(file_path,:force => true)
           when :modified
-            run_cmd "p4 edit #{p4_path}#{file}", simulate
-            run_cmd "cp #{git_path}#{file} #{p4_path}#{file}", simulate
+            run_cmd "p4 edit '#{p4_path}#{file}'", simulate
+            run_cmd "cp '#{git_path}#{file}' '#{p4_path}#{file}'", simulate
           else
             puts "Unknown change type #{action}. Stopping."
             exit 1
@@ -69,7 +74,7 @@ module GitP4Sync
       if submit
         git_head_commit = ""
         Dir.chdir(git_path) do
-          git_head_commit = `git show --pretty=oneline`.split("\n")[0]
+          git_head_commit = `git show -v -s --pretty=oneline`.split("\n")[0]
         end
         
         Dir.chdir(p4_path) do

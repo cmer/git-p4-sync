@@ -1,3 +1,5 @@
 require 'rubygems'
 require 'diff_dirs'
 require 'optparse'
+require 'find'
+require 'fileutils'
