@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
     "LICENSE",
      "README.rdoc",
      "Rakefile",
-     "VERSION",
      "bin/git-p4-sync",
      "lib/git_p4_sync.rb",
      "lib/init.rb",
