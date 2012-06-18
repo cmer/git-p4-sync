@@ -30,9 +30,11 @@ To add addition items use the -i/--ignore flag. It can take a single item, or a 
 
 == COPYRIGHT
 
-Copyright (c) 2009-2011 {Carl Mercier}[http://carlmercier.com]. See LICENSE for details.
+Copyright (c) 2009-2012 {Carl Mercier}[http://carlmercier.com]. See LICENSE for details.
 
 == CONTRIBUTORS
 
 {Vincent Batts}[https://github.com/vbatts]
+{Daniel Nugent}[https://github.com/DannoHung]
+
 
